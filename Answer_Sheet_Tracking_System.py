@@ -1,0 +1,85 @@
+import csv
+from os import system
+omrSerialNUMMBER=34500
+system('color 9')
+
+class OMRset:
+  def __init__(self,answeredTuple,totalQuetion=20):
+    self.answeredQuetions=answeredTuple
+    self.numberOfQuetions=totalQuetion
+    self.numberOfCorrect=0
+    self.numberOfWrong=0
+    self.numberOfUnattempt=self.numberOfQuetions
+
+  def checkAnswer(self,answer,mark,negetivemark):
+    self.negetiveMark=negetivemark
+    self.mark=mark
+    for i in range(self.numberOfQuetions):
+      if self.answeredQuetions[i]==answer[i]:
+        self.numberOfCorrect+=1
+        self.numberOfUnattempt-=1
+        # print(self.answeredQuetions[i],end=' ')
+      elif self.answeredQuetions[i]=='':
+        pass
+      else:
+        self.numberOfWrong+=1
+        self.numberOfUnattempt-=1
+
+  def getResult(self):
+    attempt=self.numberOfCorrect+self.numberOfWrong
+    print('Attempt   : ',str(attempt).ljust(10))
+    nu=str(self.numberOfUnattempt).ljust(10)
+    nc=self.numberOfCorrect
+    nw=self.numberOfWrong
+    print('Unattempt : ',nu)
+    print('Correct   : ',str().ljust(10),f'{nc}x{self.mark}\t {nc*self.mark}')
+    print('Wrong     : ',str(nw).ljust(10),f'{nw}x{self.negetiveMark}\t {nw*self.negetiveMark}')
+    print('Tota      : ',nc*self.mark-nw*self.negetiveMark)
+
+class OMR_Sheet:
+  def __init__(self,numberOfQuetion,OMRNumber,answeredTuple,ans,mark,negetivemark):
+    self.OMRN=OMRNumber
+    self.mark=mark
+    self.negetiveMark=negetivemark
+    self.answerset=OMRset(answeredTuple,numberOfQuetion)
+    self.answerset.checkAnswer(ans,mark,negetivemark)
+
+  def showResult(self):
+    print('OMR Sheet NUMBER : '.ljust(20),self.OMRN)
+    self.answerset.getResult()
+
+csv_file=open('./ans.csv','r')
+csv_data=csv.reader(csv_file)
+
+n=int(input('enter the number of student (n<20):'))
+omrSerialNUMMBERCount=omrSerialNUMMBER
+# n=3
+i=0
+student=dict()
+ans=next(csv_data)
+while True:
+  print(
+  """Select following Option
+  1. insert name
+  2. exit
+  3. show all 
+  """)
+  option=input()
+  system('cls')
+  if option=='2':
+    break
+  elif option=='1':
+    answeredTuple=next(csv_data)
+    name=input('enter student name :')
+    omrSerialNUMMBERCount+=1
+    student[name]=OMR_Sheet(20,omrSerialNUMMBERCount,answeredTuple,ans,1,.25)
+    print('name : ',name)
+    student[name].showResult()
+  elif option=='3':
+    for k in student:
+      print('name  : ',k)
+      student[k].showResult()
+  i+=1
+  if i==n:
+    break
+
