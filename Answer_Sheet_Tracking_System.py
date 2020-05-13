@@ -54,28 +54,27 @@ class OMR_Sheet:
     print('OMR Sheet NUMBER : '.ljust(20), self.OMRN)
     self.answerset.getResult()
 
+	
 if __name__ == '__main__':
 	omrSerialNUMMBER = 34500
 	global omrSerialNUMMBER
-	csv_file = open('./ans.csv','r')
+	csv_file = open('./ans.csv', 'r')
 	csv_data = csv.reader(csv_file)
 
 	# n = int(input('enter the number of student (n<20):'))
-	omrSerialNUMMBERCount = omrSerialNUMMBER
-	n = 3
-	i = 0
-	student = dict()
-	ans = next(csv_data)
-
-	while True:
-	  print(
-	  """Select following Option
+	omrSerialNUMMBERCount, n, i = omrSerialNUMMBER, 3, 0
+	student, ans = dict(), next(csv_data)
+	msg = """	Select following Option
 	  1. insert name
 	  2. exit
 	  3. show all 
-	  """)
+	  """
+	while True:
+	 		
+	  print(msg)
 	  option = input()
 	  # system('cls')
+	
 	  if option == '2':
 	    break
 	  elif option == '1':
